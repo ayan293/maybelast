@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Our Dark Romance | One Year Anniversary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Global reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --dark-bg: #0a0a0f;
+            --deep-burgundy: #3d0b0b;
+            --blood-red: #8a0a0a;
+            --dark-rose: #6a2c2c;
+            --gold: #c8a971;
+            --silver: #c0c0c0;
+            --dark-text: #d8d8d8;
+            --light-text: #f5f5f5;
+            --pale-pink: #d8a8a8;
+            --dark-purple: #1a1029;
+            --max-width: 1200px;
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--deep-burgundy) 70%);
+            color: var(--dark-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-attachment: fixed;
+            padding-top: 80px; /* keep content below fixed nav */
+        }
+
+        /* Custom cursor (hidden on touch devices) */
+        .custom-cursor,
+        .cursor-follower {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.15s linear;
+            will-change: transform;
+        }
+
+        .custom-cursor {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--blood-red);
+            mix-blend-mode: difference;
+            opacity: 0.85;
+        }
+
+        .cursor-follower {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1px solid var(--gold);
+            opacity: 0.55;
+        }
+
+        /* Hide custom cursor on touch or when body has .touch */
+        body.touch .custom-cursor,
+        body.touch .cursor-follower {
+            display: none;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 20px;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.9);
+            backdrop-filter: blur(6px);
+            border-bottom: 1px solid rgba(200,169,113,0.08);
+        }
+
+        .nav-inner {
+            max-width: var(--max-width);
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .brand {
+            color: var(--gold);
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+            font-size: clamp(1rem, 1.5vw, 1.25rem);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--silver);
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: clamp(0.9rem, 1.1vw, 1.05rem);
+            transition: color 0.25s ease;
+            padding: 8px 6px;
+            border-radius: 4px;
+        }
+
+        .nav-links a:after {
+            content: '';
+            display: block;
+            height: 2px;
+            width: 0;
+            background: var(--blood-red);
+            transition: width 0.25s ease;
+            margin-top: 4px;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+
+        /* Mobile nav toggle */
+        .nav-toggle {
+            display: none;
+            background: transparent;
+            border: 0;
+            color: var(--silver);
+            font-size: 1.5rem;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            border-radius: 6px;
+        }
+
+        .nav-toggle:focus {
+            outline: 2px solid rgba(200,169,113,0.14);
+            outline-offset: 2px;
+        }
+
+        /* --- Animated hamburger --- */
+        .hamburger {
+            display: inline-block;
+            width: 28px;
+            height: 20px;
+            position: relative;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .hamburger span {
+            display: block;
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--silver);
+            border-radius: 2px;
+            transition: transform 360ms cubic-bezier(.22,.9,.31,1), opacity 220ms ease, background-color 220ms ease;
+            transform-origin: center;
+        }
+
+        .hamburger span:nth-child(1) { top: 0; }
+        .hamburger span:nth-child(2) { top: 50%; transform: translateY(-50%); }
+        .hamburger span:nth-child(3) { bottom: 0; }
+
+        /* open state morphs to X */
+        .nav-toggle.open .hamburger span:nth-child(1) {
+            transform: translateY(9px) rotate(45deg);
+            background: var(--gold);
+        }
+        .nav-toggle.open .hamburger span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        .nav-toggle.open .hamburger span:nth-child(3) {
+            transform: translateY(-9px) rotate(-45deg);
+            background: var(--gold);
+        }
+
+        /* Sections */
+        section {
+            min-height: 80vh;
+            padding: clamp(40px, 6vw, 100px) 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="%231a1029" d="M50 50L0 25L0 75L50 100L100 75L100 25Z"/></svg>');
+            background-size: 200px;
+            opacity: 0.04;
+            pointer-events: none;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2.2rem, 6vw, 4.5rem);
+            color: var(--gold);
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(200, 169, 113, 0.45);
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.4rem, 3vw, 2.5rem);
+            margin-bottom: 24px;
+            color: var(--silver);
+            text-align: center;
+            font-weight: 400;
+            position: relative;
+        }
+
+        h2:after {
+            content: '❤';
+            position: absolute;
+            bottom: -26px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--blood-red);
+            font-size: 1.2rem;
+        }
+
+        p {
+            font-size: clamp(1rem, 2.2vw, 1.25rem);
+            line-height: 1.7;
+            margin-bottom: 18px;
+            max-width: 900px;
+            text-align: center;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 30px 0;
+            width: 100%;
+            gap: 12px;
+        }
+
+        .divider-line {
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, var(--gold) 50%, transparent 100%);
+            flex-grow: 1;
+            max-width: 200px;
+        }
+
+        .divider-icon {
+            color: var(--blood-red);
+            font-size: 1.2rem;
+        }
+
+        /* Hero Section */
+        #hero {
+            text-align: center;
+            background-size: cover;
+            position: relative;
+            overflow: visible;
+            padding-top: clamp(20px, 10vh, 60px);
+            padding-bottom: clamp(20px, 10vh, 60px);
+        }
+
+        #hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, transparent 0%, var(--dark-bg) 70%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            padding: 0 12px;
+        }
+
+        .hero-title {
+            font-size: clamp(2.6rem, 8vw, 5rem);
+            margin-bottom: 12px;
+            animation: flicker 8s infinite, pulse 4s ease-in-out infinite;
+            position: relative;
+        }
+
+        .subtitle {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: clamp(1rem, 2.2vw, 1.8rem);
+            color: var(--silver);
+            margin-bottom: 26px;
+            animation: fadeIn 3s ease-in-out;
+        }
+
+        /* Rose petals */
+        .rose-petal {
+            position: fixed;
+            width: 16px;
+            height: 16px;
+            background: var(--pale-pink);
+            opacity: 0.7;
+            border-radius: 50% 0 50% 50%;
+            transform: rotate(45deg);
+            z-index: 1;
+            animation: fall linear forwards;
+            pointer-events: none;
+        }
+
+        /* Hearts animation */
+        .heart {
+            position: fixed;
+            pointer-events: none;
+            animation: floatHeart 8s ease-in forwards;
+            opacity: 0.6;
+            z-index: 0;
+        }
+
+        .heart::before,
+        .heart::after {
+            content: "";
+            background-color: var(--blood-red);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        .heart::before {
+            top: -50%;
+            left: 0;
+        }
+
+        .heart::after {
+            top: 0;
+            left: 50%;
+        }
+
+        /* Memories Section */
+        #memories {
+            background: linear-gradient(135deg, var(--deep-burgundy) 0%, #1a0a0a 100%);
+        }
+
+        .memory-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            max-width: var(--max-width);
+            margin: 0 auto;
+            width: 100%;
+            padding: 0 12px;
+        }
+
+        .memory-card {
+            background: rgba(30, 15, 15, 0.78);
+            border: 1px solid var(--blood-red);
+            border-radius: 8px;
+            padding: 18px;
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-height: 180px;
+        }
+
+        .memory-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(138, 10, 10, 0.2);
+        }
+
+        .memory-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--blood-red), var(--gold));
+        }
+
+        .memory-date {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 0.95rem;
+        }
+
+        .memory-text {
+            font-size: clamp(0.95rem, 1.6vw, 1.1rem);
+            line-height: 1.6;
+            color: var(--light-text);
+        }
+
+        /* Timeline Section */
+        #timeline {
+            background: linear-gradient(135deg, #1a0a0a 0%, var(--deep-burgundy) 100%);
+        }
+
+        .timeline {
+            position: relative;
+            max-width: var(--max-width);
+            margin: 0 auto;
+            width: 100%;
+            padding: 0 12px;
+        }
+
+        /* central line */
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background: linear-gradient(to bottom, transparent 0%, var(--blood-red) 15%, var(--blood-red) 85%, transparent 100%);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: timelineGlow 3s infinite alternate;
+        }
+
+        .timeline-item {
+            padding: 10px 24px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+            margin-bottom: 48px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.7s cubic-bezier(.2,.8,.2,1);
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+
+        .timeline-content {
+            padding: 18px;
+            background: rgba(40, 20, 20, 0.82);
+            border: 1px solid var(--blood-red);
+            border-radius: 8px;
+            position: relative;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .timeline-content:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(138, 10, 10, 0.35);
+        }
+
+        .timeline-date {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: var(--blood-red);
+            border: 2px solid var(--gold);
+            border-radius: 50%;
+            top: 50%;
+            right: -36px;
+            transform: translateY(-50%);
+            z-index: 1;
+            animation: pulse 2s infinite;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: var(--blood-red);
+            border: 2px solid var(--gold);
+            border-radius: 50%;
+            top: 50%;
+            left: -36px;
+            transform: translateY(-50%);
+            z-index: 1;
+            animation: pulse 2s infinite;
+        }
+
+        /* Love Letter Section */
+        #letter {
+            background: linear-gradient(135deg, var(--deep-burgundy) 0%, #1a0a0a 100%);
+        }
+
+        .letter-container {
+            max-width: 860px;
+            background: rgba(30, 15, 15, 0.78);
+            padding: 28px;
+            border-radius: 8px;
+            border: 1px solid var(--gold);
+            position: relative;
+            box-shadow: 0 8px 30px var(--blood-red);
+            transform: perspective(1000px) rotateX(2deg);
+            transition: transform 0.45s ease;
+        }
+
+        .letter-container:hover {
+            transform: perspective(1000px) rotateX(0deg);
+                
+        }
+        
+
+        .letter-content {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1rem, 1.8vw, 1.25rem);
+            line-height: 1.8;
+            text-align: left;
+        }
+
+        .letter-content p {
+            text-align: left;
+            margin-bottom: 14px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.6s ease;
+        }
+
+        .letter-content p.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .signature {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.4rem, 3.2vw, 2.5rem);
+            text-align: right;
+            margin-top: 18px;
+            color: var(--gold);
+            opacity: 0;
+            transform: translateX(40px);
+            transition: all 0.9s ease 0.3s;
+        }
+
+        .signature.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Countdown Section */
+        #countdown {
+            background: linear-gradient(135deg, #1a0a0a 0%, var(--deep-burgundy) 100%);
+            text-align: center;
+        }
+
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+            padding: 0 12px;
+        }
+
+        .countdown-box {
+            background: rgba(30, 15, 15, 0.78);
+            padding: 18px;
+            border-radius: 8px;
+            min-width: 100px;
+            border: 1px solid rgba(200,169,113,0.07);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .countdown-box:hover {
+            transform: translateY(-6px) rotateX(6deg);
+            box-shadow: 0 8px 18px rgba(138, 10, 10, 0.2);
+        }
+
+        .countdown-value {
+            font-size: clamp(1.6rem, 4vw, 3rem);
+            font-weight: bold;
+            color: var(--gold);
+            font-family: 'Cinzel', serif;
+            margin-bottom: 6px;
+            text-shadow: 0 0 10px rgba(200, 169, 113, 0.3);
+        }
+
+        .countdown-label {
+            font-size: 0.85rem;
+            color: var(--silver);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Animations */
+        @keyframes flicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% {
+                text-shadow: 0 0 5px var(--gold), 0 0 10px var(--blood-red);
+            }
+            20%, 24%, 55% {
+                text-shadow: none;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.9;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0.9;
+            }
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-120px) rotate(45deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(110vh) rotate(45deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes timelineGlow {
+            0% { box-shadow: 0 0 5px var(--blood-red); }
+            100% { box-shadow: 0 0 20px var(--blood-red); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 980px) {
+            .timeline::after { left: 30px; transform: none; }
+            .timeline-item { width: 100%; padding-left: 72px; padding-right: 20px; text-align: left; }
+            .timeline-item:nth-child(even) { left: 0; }
+            .timeline-item:nth-child(odd) .timeline-content::after,
+            .timeline-item:nth-child(even) .timeline-content::after {
+                left: 16px;
+                right: auto;
+                top: 18px;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .nav-toggle { display: inline-flex; }
+            .nav-links { position: absolute; top: 72px; right: 0; background: rgba(10,10,15,0.98); flex-direction: column; gap: 0; width: 220px; transform: translateY(-12px); opacity: 0; pointer-events: none; border-left: 1px solid rgba(200,169,113,0.04); padding: 8px; border-radius: 6px; transition: all 0.25s ease; }
+            .nav-links.show { transform: translateY(0); opacity: 1; pointer-events: auto; }
+            .nav-links a { display: block; padding: 14px 12px; border-radius: 4px; }
+            body { padding-top: 64px; }
+            .memory-container { gap: 14px; }
+            section { padding: clamp(28px, 6vw, 56px) 16px; }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title { font-size: clamp(2rem, 8vw, 3.6rem); }
+            .nav-inner { padding: 0 8px; }
+            .countdown-container { gap: 10px; }
+            .nav-links { width: 180px; }
+            .letter-container { padding: 18px; }
+            .timeline::after { display: none; } /* simpler layout on tiny screens */
+            .timeline-item { padding-left: 16px; padding-right: 16px; }
+            .timeline-item .timeline-content::after { display: none; }
+            .custom-cursor, .cursor-follower { display: none; } /* avoid cursor on tiny devices */
+        }
+
+        /* Respect reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .hero-title, .subtitle, .heart, .rose-petal, .timeline::after, .timeline-item, .letter-content p {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+        /* Confession block styling */
+.confession {
+  max-width: 460px;
+  color: var(--gold);
+  line-height: 1.9;
+  font-style: italic;
+  padding: 20px;
+  border-radius: 10px;
+  background: rgba(10,10,12,0.18);           /* subtle dark panel */
+  border: 1px solid var(--blood-red);  /* faint gold edge */
+  box-shadow: 0 8px 30px var(--gold);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition: transform 0.35s ease, opacity 0.35s ease;
+  margin: 0 auto;
+  font-size: clamp(0.95rem, 1.05vw, 1.02rem);
+}
+
+/* Paragraph base state (hidden for reveal) */
+.confession p {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 600ms cubic-bezier(.2,.9,.2,1), transform 600ms cubic-bezier(.2,.9,.2,1);
+  margin: 14px 0;
+}
+
+/* Visible paragraphs */
+.confession p.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Slight visual emphasis for the core emotional paragraph (not proud — subtle) */
+.confession .core {
+  background: linear-gradient(90deg, rgba(138,10,10,0.02), rgba(0,0,0,0));
+  border-left: 4px solid rgba(138,10,10,0.10);
+  padding-left: 12px;
+  border-radius: 6px;
+}
+
+/* The "truth" line can be slightly bolder */
+.confession .truth {
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+/* Final lines reveal styling (each .reveal-line hidden initially) */
+.final-lines .reveal-line {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 420ms ease, transform 420ms ease;
+}
+
+/* When revealed */
+.final-lines .reveal-line.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Small responsive tweaks */
+@media (max-width:720px) {
+  .confession { padding: 16px; font-size: 0.98rem; }
+}
+
+ /* Carousel: paste this CSS block into your main stylesheet or keep here */
+    .poem-carousel {
+      --carousel-height: clamp(220px, 32vw, 320px);
+      --carousel-bg: linear-gradient(135deg, rgba(26,16,41,0.45), rgba(61,11,11,0.35));
+      margin: clamp(28px, 4vw, 48px) 0;
+      display: block;
+      background: var(--carousel-bg);
+      border: 1px solid rgba(200,169,113,0.06);
+      padding: 18px;
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .poem-carousel .viewport {
+      width: 100%;
+      height: var(--carousel-height);
+      overflow: hidden;
+      position: relative;
+       box-shadow: 0 8px 30px var(--gold);
+    }
+
+    .poem-carousel .track {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      transition: transform 600ms cubic-bezier(.22,.9,.31,1);
+      will-change: transform;
+    }
+
+    /* Each slide takes full viewport width */
+    .poem-carousel .slide {
+      box-sizing: border-box;
+      min-width: 100%;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .poem-card {
+      max-width: 900px;
+      width: 100%;
+      color: var(--light-text, #f5f5f5);
+      font-family: 'Cormorant Garamond', serif;
+      text-align: left;
+      line-height: 1.7;
+      background: rgba(10,10,12,0.12);
+      border-radius: 10px;
+      padding: clamp(12px, 2.4vw, 28px);
+      border: 1px solid var(--dark-rose);
+       box-shadow: 0 8px 30px var(--blood-red);
+    }
+
+    .poem-card h3 {
+      margin-bottom: 8px;
+      color: var(--gold, #c8a971);
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+    }
+
+    .poem-card .lines {
+      font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+      color: var(--dark-text, #e2dede);
+      white-space: pre-wrap;
+    }
+
+    /* small centered pager for accessible context (visually subtle; not interactive) */
+    .poem-carousel .pager {
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      color: rgba(200,169,113,0.9);
+      background: rgba(0,0,0,0.18);
+      border-radius: 999px;
+      padding: 6px 10px;
+      pointer-events: none;
+      user-select: none;
+      backdrop-filter: blur(4px);
+    }
+
+    /* Pause hint on hover/focus (visually subtle) */
+    .poem-carousel .hint {
+      position: absolute;
+      left: 12px;
+      bottom: 12px;
+      font-size: 0.8rem;
+      color: rgba(180,180,180,0.85);
+      background: rgba(0,0,0,0.14);
+      padding: 6px 8px;
+      border-radius: 6px;
+      pointer-events: none;
+    }
+
+    /* Reduced motion: disable transition and autoplay */
+    @media (prefers-reduced-motion: reduce) {
+      .poem-carousel .track {
+        transition: none;
+      }
+    }
+
+    /* Responsive tweaks */
+    @media (max-width:720px) {
+      .poem-carousel { padding: 12px; border-radius: 8px; }
+      .poem-card { padding: 12px; }
+      .poem-card h3 { font-size: 1rem; }
+    }
+
+    </style>
+</head>
+<body>
+    <!-- Custom cursor -->
+    <div class="custom-cursor" aria-hidden="true"></div>
+    <div class="cursor-follower" aria-hidden="true"></div>
+
+    <nav>
+        <div class="nav-inner" role="navigation" aria-label="Main Navigation">
+            <div class="brand">One Year | Still Burning</div>
+            <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation">
+                <!-- Animated hamburger made of spans; will morph to an X when .open is added on the button -->
+                <span class="hamburger" aria-hidden="true">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </button>
+            <div class="nav-links" id="primary-nav">
+                <a href="#memories">Memories</a>
+                <a href="#timeline">Timeline</a>
+                <a href="#letter">Love Letter</a>
+                <a href="#countdown">Countdown</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section id="hero" aria-labelledby="hero-heading">
+    <div class="hero-content">
+        <h1 id="hero-heading" class="hero-title">Twelve Months | One Devotion</h1>
+        <p class="subtitle">A year carved in silence, scars, and devotion that never broke</p>
+        <div class="divider" aria-hidden="true">
+            <div class="divider-line"></div>
+            <div class="divider-icon">❤</div>
+            <div class="divider-line"></div>
+        </div>
+        <p>From confession to collapse to resurrection | we endured | we still burn</p>
+    </div>
+</section>
+
+
+        <section id="memories" aria-labelledby="memories-heading">
+            <h2 id="memories-heading">Our Memories</h2>
+            <div class="memory-container">
+    <div class="memory-card">
+        <div class="memory-date">15 Sept 2024 | Confession</div>
+        <div class="memory-text">
+            The night her confession tore open the silence.  
+            My world cracked and remade itself in her voice.  
+            Imagination I carried for years suddenly bled into reality.
+        </div>
+    </div>
+    <div class="memory-card">
+        <div class="memory-date">19 Nov 2024 | My Birthday</div>
+        <div class="memory-text">
+            She poured fire into my veins with two long paragraphs and over a hundred messages.  
+            Every word felt like a pulse written straight into my bones.
+        </div>
+    </div>
+    <div class="memory-card">
+        <div class="memory-date">31 Dec 2024 | New Year</div>
+        <div class="memory-text">
+            No fireworks, no crowd, only us.  
+            Through screens we stepped into the new year as if the whole world had dissolved, leaving only two souls holding midnight together.
+        </div>
+    </div>
+    <div class="memory-card">
+        <div class="memory-date">14 Feb 2025 | Valentine’s Day</div>
+        <div class="memory-text">
+            Only a wish, yet even that single line felt heavy.  
+            Silence carried more than roses ever could.
+        </div>
+    </div>
+    <div class="memory-card">
+        <div class="memory-date">24 Feb 2025 | Her Birthday</div>
+        <div class="memory-text">
+            The universe whispered how rare I am to exist in the same time as her.  
+            Lucky isn’t the word. Blessed doesn’t even come close.
+        </div>
+    </div>
+    <div class="memory-card">
+        <div class="memory-date">Mid 2025 | The Rift</div>
+        <div class="memory-text">
+            Shadows came. Misunderstandings burned holes into what we built.  
+            But love, our stubborn and relentless love, stitched it all back together with scars that still glow.
+        </div>
+    </div>
+    <div class="memory-card">
+        <div class="memory-date">15 Sept 2025 | One Year</div>
+        <div class="memory-text">
+            One year completed. A full circle of obsession, devotion, and survival.  
+            The darkness tested us, but here we are, still standing and still burning.
+        </div>
+    </div>
+</div>
+
+        </section>
+        <section>
+<div class="viewport" tabindex="0" aria-live="polite" aria-atomic="true">
+    <div class="track" id="poemTrack">
+      <div class="slide" role="group" aria-roledescription="slide" aria-label="Poem 1 of 3">
+        <article class="poem-card">
+          <h3>Poem 1 | Her Silence Owns Me</h3>
+          <div class="lines">
+Your silence is not absence—
+it’s a blade pressed against my chest.
+
+Every time you fall quiet,
+I feel chained to the weight of you,
+like even your unspoken thoughts
+have the power to undo me.
+
+Others talk, they shout,
+but your silence is the only sound
+that has ever broken me beautifully.
+          </div>
+        </article>
+      </div>
+
+      <div class="slide" role="group" aria-roledescription="slide" aria-label="Poem 2 of 3">
+        <article class="poem-card">
+          <h3>Poem 2 | The Fire That Burns Me Whole</h3>
+          <div class="lines">
+You are not gentle.
+And that is why I cannot leave.
+
+You are storm and ruin,
+and I crave the wreckage.
+
+Every word from you scars me deeper,
+every glance makes the rest of the world dissolve.
+
+I don’t want their softness—
+I want the violence of your fire,
+because only in your flames
+do I feel alive enough to bleed.
+          </div>
+        </article>
+      </div>
+
+      <div class="slide" role="group" aria-roledescription="slide" aria-label="Poem 3 of 3">
+        <article class="poem-card">
+          <h3>Poem 3 | The Possession I Chose</h3>
+          <div class="lines">
+I don’t just love you—
+I surrendered to you.
+
+Every breath I take tastes of your name,
+every night is a grave I lie in,
+waiting for the echo of you.
+
+Call it obsession,
+call it madness,
+but understand this:
+
+No illusion, no shadow, no dream man
+will ever love you the way I already do.
+I am the wound you never asked for,
+and the devotion that will haunt you forever.
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+
+ 
+</section>
+        <section id="timeline" aria-labelledby="timeline-heading">
+            <h2 id="timeline-heading">Our Timeline of Obsession</h2>
+           <div class="timeline">
+    <div class="timeline-item">
+        <div class="timeline-content">
+            <div class="timeline-date">15 Sept 2024 | Confession</div>
+            <p>Her words shattered the silence I had lived in for years.  
+            It felt like the ghost I loved in secret had finally stepped out of the shadows to claim me.</p>
+        </div>
+    </div>
+
+    <div class="timeline-item">
+        <div class="timeline-content">
+            <div class="timeline-date">19 Nov 2024 | My Birthday</div>
+            <p>Two long paragraphs, a hundred messages.  
+            Every line felt like fire dripping into my chest.  
+            That night, I wasn’t just alive, I was worshiped in her words.</p>
+        </div>
+    </div>
+
+    <div class="timeline-item">
+        <div class="timeline-content">
+            <div class="timeline-date">31 Dec 2024 | New Year</div>
+            <p>While the world celebrated in noise, we celebrated in silence.  
+            Just us, two souls crossing into a new year together.  
+            Midnight belonged only to her and me.</p>
+        </div>
+    </div>
+
+    <div class="timeline-item">
+        <div class="timeline-content">
+            <div class="timeline-date">14 Feb 2025 | Valentine’s Day</div>
+            <p>I only wished her a simple greeting.  
+            Yet the weight of what I didn’t say thundered louder than what I did.  
+            Sometimes, restraint is darker than confession.</p>
+        </div>
+    </div>
+
+    <div class="timeline-item">
+        <div class="timeline-content">
+            <div class="timeline-date">24 Feb 2025 | Her Birthday</div>
+            <p>She was born on this day.  
+            I felt like the universe had written me into her timeline only so I could celebrate her existence.</p>
+        </div>
+    </div>
+
+    <div class="timeline-item">
+        <div class="timeline-content">
+            <div class="timeline-date">Mid 2025 | The Rift</div>
+            <p>We broke. We burned. Shadows pulled at us.  
+            But even ruins can hold devotion.  
+            Our scars became the proof that love doesn’t die, it survives bleeding.</p>
+        </div>
+    </div>
+
+    <div class="timeline-item">
+        <div class="timeline-content">
+            <div class="timeline-date">15 Sept 2025 | One Year</div>
+            <p>One full year. From confession to collapse to resurrection.  
+            We made it. Still bound, still burning, still ours.  
+            A timeline of obsession now carved into eternity.</p>
+        </div>
+    </div>
+</div>
+
+        </section>
+
+        <section id="letter" aria-labelledby="letter-heading">
+            <h2 id="letter-heading">My Dark Love Letter</h2>
+           <div class="letter-container">
+    <div class="letter-content">
+        <p>My Eternal Flame,</p>
+
+        <p>One year ago your confession shattered the silence I was trapped in.  
+        In that moment my world was rewritten and my soul was claimed by you forever.</p>
+
+        <p>They call love light and gentle, but ours was never meant for softness.  
+        Ours is carved in shadows | sealed in silence | and bound by a devotion too fierce for anyone else to understand.</p>
+
+        <p>You are the calm that silences my storms | the ache that keeps me alive | the answer to every question I never dared to ask.  
+        Every heartbeat I own belongs to you, willingly chained and beautifully surrendered.</p>
+
+        <p>I carry your name like a scar that refuses to fade.  
+        If eternity gave me the choice again, I would fall to you once more even if it meant burning until the end of time.</p>
+
+        <p class="signature">Eternally Yours,<br>Your Obsession</p>
+    </div>
+</div>
+
+        </section>
+
+        <section id="countdown" aria-labelledby="countdown-heading">
+            <h2 id="countdown-heading">Until Eternity Begins Again</h2>
+            <div class="countdown-container">
+                <div class="countdown-box">
+                    <div class="countdown-value" id="days">365</div>
+                    <div class="countdown-label">Days</div>
+                </div>
+                <div class="countdown-box">
+                    <div class="countdown-value" id="hours">00</div>
+                    <div class="countdown-label">Hours</div>
+                </div>
+                <div class="countdown-box">
+                    <div class="countdown-value" id="minutes">00</div>
+                    <div class="countdown-label">Minutes</div>
+                </div>
+                <div class="countdown-box">
+                    <div class="countdown-value" id="seconds">00</div>
+                    <div class="countdown-label">Seconds</div>
+                </div>
+                 
+            </div>
+            <p>Until our next anniversary, my Sweetheart</p>
+        </section>
+        <section>
+            <div class="confession" id="confession">
+  <p> A full year has passed, my love.  
+      Twelve months where I burned quietly  
+      while you dreamed of men who exist only in shadows and screens.
+  </p>
+
+  <p> You called me the real one,  
+      and yet your heart wandered toward illusions—  
+      figures who never bleed, never break,  
+      never feel the weight of silence the way I do.
+  </p>
+
+  <p class="truth"> I bleed. I break. I am not flawless.  
+      And maybe that was my only crime:  
+      being too real to ever be your dream.
+  </p>
+
+  <p class="core"> I loved you in ways they never could.  
+      Not even in the worlds you escape to.  
+      My love was flawed, fragile, scarred—  
+      but it was real.  
+      Their words are perfect, their faces untouchable,  
+      yet your silence cut me deeper than all their promises combined.
+  </p>
+
+  <p> What they gave you was safe and hollow,  
+      a dream that could never bleed.  
+      What I gave you was myself—  
+      a body that breaks, a soul that bends,  
+      devotion that burned even when it was unseen.
+  </p>
+
+  <p> And maybe that is why you never felt it.  
+      Because I was never extraordinary,  
+      never a dream worth chasing.  
+      I was only the nothingness beneath your fantasies,  
+      the quiet proof that someone loved you harder  
+      than fiction ever dared to.
+  </p>
+
+  <p> Maybe I am just the void,  
+      the silence between your fantasies,  
+      the man who loves you deeply  
+      but will never shine like the illusions you chase.
+  </p>
+
+  <p class="final-lines"> And if this void dissolves tonight,  
+      let the countdown be my last confession.  
+      Every number falling is another way of saying  
+      <span >I loved you,</span><br>
+      <span >I still love you,</span><br>
+      <span >and maybe I always will—even when I am nothing but silence.</span>
+  </p>
+</div>
+
+        </section>
+        
+    </main>
+
+    <script>
+        // Accessibility: close mobile nav when clicking outside
+        (function() {
+            const navToggle = document.querySelector('.nav-toggle');
+            const navLinks = document.querySelector('.nav-links');
+
+            navToggle.addEventListener('click', () => {
+                const isOpen = navLinks.classList.toggle('show');
+                navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                // toggle the open class on the button to animate hamburger -> X
+                navToggle.classList.toggle('open', isOpen);
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!navLinks.contains(e.target) && !navToggle.contains(e.target)) {
+                    navLinks.classList.remove('show');
+                    navToggle.setAttribute('aria-expanded', 'false');
+                    navToggle.classList.remove('open');
+                }
+            });
+
+            // close the nav on link click (mobile)
+            navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+                navLinks.classList.remove('show');
+                navToggle.setAttribute('aria-expanded', 'false');
+                navToggle.classList.remove('open');
+            }));
+        })();
+
+        // Detect touch devices and add .touch to body to simplify behavior
+        (function() {
+            function isTouchDevice() {
+                return (('ontouchstart' in window) || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0);
+            }
+            if (isTouchDevice()) {
+                document.body.classList.add('touch');
+            }
+        })();
+
+        // Smooth cursor with requestAnimationFrame and easing; disabled for touch devices
+        (function() {
+            const cursor = document.querySelector('.custom-cursor');
+            const follower = document.querySelector('.cursor-follower');
+            if (!cursor || !follower || document.body.classList.contains('touch')) return;
+
+            let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+            let posX = mouseX, posY = mouseY;
+
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                cursor.style.left = mouseX + 'px';
+                cursor.style.top = mouseY + 'px';
+            });
+
+            // follower interpolation
+            function lerp(a, b, n) { return (1 - n) * a + n * b; }
+
+            function animate() {
+                posX = lerp(posX, mouseX, 0.18);
+                posY = lerp(posY, mouseY, 0.18);
+                follower.style.left = posX + 'px';
+                follower.style.top = posY + 'px';
+                requestAnimationFrame(animate);
+            }
+            requestAnimationFrame(animate);
+
+            // Hide cursor when leaving window
+            window.addEventListener('mouseout', () => {
+                cursor.style.opacity = '0';
+                follower.style.opacity = '0';
+            });
+            window.addEventListener('mouseover', () => {
+                cursor.style.opacity = '0.85';
+                follower.style.opacity = '0.55';
+            });
+        })();
+
+        // Create falling rose petals and floating hearts with device-aware throttling
+        (function() {
+            const isTouch = document.body.classList.contains('touch');
+            const maxPetalInterval = isTouch ? 1200 : 300;
+            const maxHeartInterval = isTouch ? 2200 : 1000;
+            let petalTimer = null;
+            let heartTimer = null;
+
+            function createPetal() {
+                const petal = document.createElement('div');
+                petal.className = 'rose-petal';
+
+                const size = (Math.random() * 12) + (isTouch ? 6 : 10);
+                petal.style.width = `${size}px`;
+                petal.style.height = `${size}px`;
+
+                const startPosition = Math.random() * window.innerWidth;
+                petal.style.left = `${startPosition}px`;
+                petal.style.top = `-${size}px`;
+
+                const duration = (Math.random() * (isTouch ? 6 : 8)) + (isTouch ? 5 : 5);
+                petal.style.animationDuration = `${duration}s`;
+
+                document.body.appendChild(petal);
+
+                setTimeout(() => petal.remove(), duration * 1000 + 200);
+            }
+
+            function createHeart() {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+
+                const size = (Math.random() * 18) + (isTouch ? 6 : 10);
+                heart.style.width = `${size}px`;
+                heart.style.height = `${size}px`;
+
+                const startPosition = Math.random() * window.innerWidth;
+                heart.style.left = `${startPosition}px`;
+                heart.style.bottom = `-${size}px`;
+
+                const duration = (Math.random() * (isTouch ? 6 : 5)) + (isTouch ? 6 : 8);
+                heart.style.animationDuration = `${duration}s`;
+                heart.style.opacity = '0.6';
+
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), duration * 1000 + 200);
+            }
+
+            // Start loops only if user doesn't prefer reduced motion
+            const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (!reduce && !isTouch) {
+                petalTimer = setInterval(createPetal, 300);
+                heartTimer = setInterval(createHeart, 1000);
+            } else if (!reduce && isTouch) {
+                // fewer animations on touch devices
+                petalTimer = setInterval(createPetal, maxPetalInterval);
+                heartTimer = setInterval(createHeart, maxHeartInterval);
+            }
+
+            // Clean up on visibility change
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    if (petalTimer) clearInterval(petalTimer);
+                    if (heartTimer) clearInterval(heartTimer);
+                } else {
+                    if (!petalTimer && !reduce) petalTimer = setInterval(createPetal, isTouch ? maxPetalInterval : 300);
+                    if (!heartTimer && !reduce) heartTimer = setInterval(createHeart, isTouch ? maxHeartInterval : 1000);
+                }
+            });
+        })();
+
+        // Timeline and letter reveal animations on scroll (intersection observer)
+        (function() {
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            const letterParagraphs = document.querySelectorAll('.letter-content p');
+            const signature = document.querySelector('.signature');
+
+            // Use IntersectionObserver for better performance
+            const obsOptions = { root: null, rootMargin: '0px', threshold: 0.18 };
+
+            const timelineObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        timelineObserver.unobserve(entry.target);
+                    }
+                });
+            }, obsOptions);
+
+            timelineItems.forEach(item => timelineObserver.observe(item));
+
+            const letterObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        letterParagraphs.forEach((para, idx) => {
+                            setTimeout(() => para.classList.add('visible'), idx * 420);
+                        });
+                        setTimeout(() => signature.classList.add('visible'), letterParagraphs.length * 420 + 120);
+                        letterObserver.disconnect();
+                    }
+                });
+            }, { root: null, rootMargin: '0px', threshold: 0.2 });
+
+            const letterContainer = document.querySelector('.letter-container');
+            if (letterContainer) letterObserver.observe(letterContainer);
+        })();
+
+        // Countdown timer (keeps using one-year-ahead demo logic)
+        (function() {
+    function updateCountdown() {
+        // Target date: 15 Sept 2025 midnight
+        const anniversary = new Date("September 15, 2026 00:00:00").getTime();
+        const now = new Date().getTime();
+        const diff = anniversary - now;
+
+        if (diff <= 0) {
+            document.getElementById('days').textContent = '0';
+            document.getElementById('hours').textContent = '00';
+            document.getElementById('minutes').textContent = '00';
+            document.getElementById('seconds').textContent = '00';
+            return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        document.getElementById('days').textContent = days;
+        document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+        document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+        document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+        })();
+// --- basic sequential reveal on load ---
+(function revealSequentialConfession(containerId = 'confession', delay = 650) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const paras = Array.from(container.querySelectorAll('p'));
+  paras.forEach((p, i) => {
+    setTimeout(() => p.classList.add('visible'), i * delay);
+  });
+})();
+
+
+
+
+
+        // Prevent layout shift on fonts by applying a small font-display fallback (can't change remote font here),
+        // but implement a quick FOUT mitigation by adding a class when fonts are loaded (optional).
+        document.fonts && document.fonts.ready.then(() => document.documentElement.classList.add('fonts-loaded')).catch(()=>{});
+    </script>
+</body>
+</html>
